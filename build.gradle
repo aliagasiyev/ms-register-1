@@ -18,12 +18,35 @@ repositories {
 }
 
 dependencies {
+    //  Spring Boot Starters
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.projectlombok:lombok'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-security' //  Security Starter
+
+    //  JWT Authentication Dependencies (Fixed Issues)
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5' //  JWT API
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5' // 🛠 Required for JWT handling
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' //  Supports JSON serialization
+
+    //  Lombok (Auto-generate boilerplate code)
+    implementation 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    //  PostgreSQL Database Driver
     runtimeOnly 'org.postgresql:postgresql'
+
+    //  MapStruct (DTO Mapping)
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+    //  Swagger UI (API Documentation)
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+
+    //  Spring Boot DevTools (For Development Hot-Reload)
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    //  Unit Testing Dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

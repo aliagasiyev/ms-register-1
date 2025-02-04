@@ -1,21 +1,12 @@
-package az.edu.msregister.entity;
-
+package az.edu.msregister.dto.request;
 import az.edu.msregister.enums.UserRole;
-import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name = "users")
+
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class UserEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class UserRegistrationRequest {
 
     private String name;
     private String surname;
@@ -26,7 +17,5 @@ public class UserEntity {
     private String courseEmail;
     private String phoneNumber;
     private String password;
-
-    @Enumerated(EnumType.STRING)
     private UserRole role;
 }
