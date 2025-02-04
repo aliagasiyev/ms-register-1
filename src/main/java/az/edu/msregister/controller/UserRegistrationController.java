@@ -19,10 +19,6 @@ public class UserRegistrationController {
 
     private final UserService userService;
 
-    /**
-     * Registers a new user.
-     * Only SUPER_ADMIN and STAFF can create users.
-     */
     @PostMapping("/register")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'STAFF')")
     public ResponseEntity<UserResponse> registerUser(@RequestBody UserRegistrationRequest request, Authentication authentication) {
@@ -30,21 +26,12 @@ public class UserRegistrationController {
         return ResponseEntity.ok(userService.registerUser(request, creatorEmail));
     }
 
-    /**
-     * Retrieves users by role.
-     * Only SUPER_ADMIN can access this.
-     */
     @GetMapping("/role/{role}")
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     public ResponseEntity<List<UserResponse>> getUsersByRole(@PathVariable UserRole role) {
         return ResponseEntity.ok(userService.getUsersByRole(role));
     }
 
-
-    /**
-     * Retrieves all users.
-     * Only SUPER_ADMIN can access this.
-     */
     @GetMapping("/all")
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     public ResponseEntity<List<UserResponse>> getAllUsers() {

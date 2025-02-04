@@ -12,7 +12,5 @@ import org.mapstruct.factory.Mappers;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    UserEntity toEntity(UserRegistrationRequest request);
-
     UserResponse toResponse(UserEntity user);
 }

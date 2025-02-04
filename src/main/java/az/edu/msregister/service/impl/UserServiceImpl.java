@@ -19,15 +19,14 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder; // Inject PasswordEncoder
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse registerUser(UserRegistrationRequest request, String creatorEmail) {
-        // Fetch the creator (who is making this request)
+
         UserEntity creator = userRepository.findByEmail(creatorEmail)
                 .orElseThrow(() -> new RuntimeException("Creator not found"));
 
-        // Validation rules: Only SUPER_ADMIN or STAFF can create users.
         if (request.getRole() == UserRole.SUPER_ADMIN) {
             throw new RuntimeException("SUPER_ADMIN can only be created manually.");
         }
@@ -40,7 +39,6 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Only SUPER_ADMIN can create STAFF users.");
         }
 
-        // Encrypt password before saving
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
         UserEntity user = UserEntity.builder()
