@@ -5,15 +5,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Main Security configuration for JWT-based authentication.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -21,6 +25,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -28,57 +33,54 @@ public class SecurityConfig {
     }
 
     /**
-     * Create an AuthenticationManager without using `and()`.
+     * In Spring Security 6, the AuthenticationManager bean
+     * is obtained via AuthenticationConfiguration.
      */
     @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder builder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
-
-        builder
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-
-        return builder.build();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 
     /**
-     * Main security filter chain configuration.
+     * Complete security setup with JWT.
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                // (1) Disable CSRF for simplicity (enable in real-world as needed)
-                .csrf(AbstractHttpConfigurer::disable)
-
-                // (2) Authorize requests
+                // (1) Disable CSRF for token-based authentication
+                .csrf(csrf -> csrf.disable())
+                // (2) Use stateless sessions (JWT)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // -- PERMIT SWAGGER Endpoints --
-                        .requestMatchers(
-                                "/v3/api-docs/**",
-                                "/swagger-ui.html",
-                                "/swagger-ui/**"
-                        ).permitAll()
+                        // -- Public Endpoints (Swagger, login, refresh) --
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/refresh").permitAll()
 
-                        // -- PERMIT Registration or other public endpoints --
-                        .requestMatchers("/api/users/register").permitAll()
+                        // -- SUPER_ADMIN or STAFF can register users --
+                        .requestMatchers("/api/users/register").hasAnyRole("SUPER_ADMIN", "STAFF")
 
-                        // -- Example: only SUPER_ADMIN can see all users
+                        // -- Only SUPER_ADMIN can see all users --
                         .requestMatchers("/api/users/role/**").hasRole("SUPER_ADMIN")
+                        .requestMatchers("/api/users/all").hasRole("SUPER_ADMIN")
 
-                        // -- Role-based endpoints --
+                        // -- STAFF, TEACHER, STUDENT role-based endpoints --
                         .requestMatchers("/api/staff/**").hasRole("STAFF")
                         .requestMatchers("/api/teacher/**").hasRole("TEACHER")
                         .requestMatchers("/api/student/**").hasRole("STUDENT")
 
-                        // -- Any other request must be authenticated --
+                        // -- Everything else requires authentication
                         .anyRequest().authenticated()
-                )
+                );
 
-                // (3) Basic auth + optional form login
-                .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults());
+        // (3) Add JWT filter before the default Username/Password filter
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // (4) Optional: Basic Auth + Form Login
+        // Remove these lines if you want pure JWT only
+        http.httpBasic(Customizer.withDefaults());
+        http.formLogin(Customizer.withDefaults());
 
         return http.build();
     }

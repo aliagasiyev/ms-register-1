@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,25 +22,33 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder; // Inject PasswordEncoder
 
     @Override
-    public UserResponse registerUser(UserRegistrationRequest request) {
-        // Check if email already exists
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already in use");
+    public UserResponse registerUser(UserRegistrationRequest request, String creatorEmail) {
+        // Fetch the creator (who is making this request)
+        UserEntity creator = userRepository.findByEmail(creatorEmail)
+                .orElseThrow(() -> new RuntimeException("Creator not found"));
+
+        // Validation rules: Only SUPER_ADMIN or STAFF can create users.
+        if (request.getRole() == UserRole.SUPER_ADMIN) {
+            throw new RuntimeException("SUPER_ADMIN can only be created manually.");
         }
 
-        //  Encrypt password before saving
+        if (creator.getRole() == UserRole.STAFF && request.getRole() == UserRole.SUPER_ADMIN) {
+            throw new RuntimeException("STAFF cannot create SUPER_ADMIN.");
+        }
+
+        if (creator.getRole() == UserRole.STAFF && request.getRole() == UserRole.STAFF) {
+            throw new RuntimeException("Only SUPER_ADMIN can create STAFF users.");
+        }
+
+        // Encrypt password before saving
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
         UserEntity user = UserEntity.builder()
                 .name(request.getName())
                 .surname(request.getSurname())
-                .fin(request.getFin())
                 .email(request.getEmail())
-                .specialization(request.getSpecialization())
-                .personalEmail(request.getPersonalEmail())
-                .courseEmail(request.getCourseEmail())
                 .phoneNumber(request.getPhoneNumber())
-                .password(encodedPassword) // Store hashed password
+                .password(encodedPassword)
                 .role(request.getRole())
                 .build();
 
@@ -50,7 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List getUsersByRole(UserRole role) {
+    public List<UserResponse> getUsersByRole(UserRole role) {
         return userRepository.findByRole(role).stream()
                 .map(UserMapper.INSTANCE::toResponse)
                 .collect(Collectors.toList());
@@ -58,9 +65,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponse> getAllUsers() {
-        return userRepository.findAll().
-                stream().map(UserMapper.INSTANCE::toResponse).
-                collect(Collectors.toList());
+        return userRepository.findAll().stream()
+                .map(UserMapper.INSTANCE::toResponse)
+                .collect(Collectors.toList());
     }
-
 }
