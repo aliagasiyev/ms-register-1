@@ -40,12 +40,14 @@ public class UserServiceImpl implements UserService {
         }
 
         String encodedPassword = passwordEncoder.encode(request.getPassword());
-
         UserEntity user = UserEntity.builder()
                 .name(request.getName())
                 .surname(request.getSurname())
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
+                .specialization(request.getSpecialization()) // Əlavə edildi
+                .personalEmail(request.getPersonalEmail())   // Əlavə edildi
+                .courseEmail(request.getCourseEmail())       // Əlavə edildi
                 .password(encodedPassword)
                 .role(request.getRole())
                 .build();
