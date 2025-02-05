@@ -1,5 +1,8 @@
 package az.edu.msregister.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum UserRole {
 
     SUPER_ADMIN("Has full access to manage the system, can create STAFF and USERS"),

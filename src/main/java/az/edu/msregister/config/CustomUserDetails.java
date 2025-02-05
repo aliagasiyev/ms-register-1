@@ -1,8 +1,6 @@
 package az.edu.msregister.config;
 
 import az.edu.msregister.entity.UserEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

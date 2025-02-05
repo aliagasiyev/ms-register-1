@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -24,6 +23,14 @@ public class UserRegistrationController {
     public ResponseEntity<UserResponse> registerUser(@RequestBody UserRegistrationRequest request, Authentication authentication) {
         String creatorEmail = authentication.getName();
         return ResponseEntity.ok(userService.registerUser(request, creatorEmail));
+    }
+
+    @DeleteMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'STAFF')")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId, Authentication authentication) {
+        String requestorEmail = authentication.getName();
+        userService.deleteUser(userId, requestorEmail);
+        return ResponseEntity.ok("User deleted successfully.");
     }
 
     @GetMapping("/role/{role}")

@@ -10,4 +10,5 @@ public interface UserService {
     UserResponse registerUser(UserRegistrationRequest user, String creatorEmail);
     List<UserResponse> getUsersByRole(UserRole role);
     List<UserResponse> getAllUsers();
+    void deleteUser(Long userId, String requestorEmail);  // Method added here
 }

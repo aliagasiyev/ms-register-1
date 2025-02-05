@@ -14,9 +14,8 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    // Gerçek projede environment variable vb. ile yönetilmesi gerekir.
     private static final String SECRET_KEY = "MyVeryLongSecretKey_ChangeThisInProduction";
-    private static final long ACCESS_TOKEN_EXPIRATION = 15 * 60 * 1000;         // 15 dk
+    private static final long ACCESS_TOKEN_EXPIRATION = 60 * 60 * 1000;         // 15 dk
     private static final long REFRESH_TOKEN_EXPIRATION = 7 * 24 * 60 * 60 * 1000; // 7 gün
 
     private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
