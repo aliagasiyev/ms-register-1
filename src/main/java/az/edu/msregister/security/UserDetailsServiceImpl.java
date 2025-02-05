@@ -1,4 +1,4 @@
-package az.edu.msregister.config;
+package az.edu.msregister.security;
 
 import az.edu.msregister.entity.UserEntity;
 import az.edu.msregister.repository.UserRepository;

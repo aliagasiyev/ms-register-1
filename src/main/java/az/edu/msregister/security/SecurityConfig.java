@@ -1,4 +1,4 @@
-package az.edu.msregister.config;
+package az.edu.msregister.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

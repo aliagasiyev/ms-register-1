@@ -1,4 +1,4 @@
-package az.edu.msregister.config;
+package az.edu.msregister.security;
 
 import az.edu.msregister.entity.UserEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,7 +20,6 @@ public record CustomUserDetails(UserEntity userEntity) implements UserDetails, S
                 new SimpleGrantedAuthority("ROLE_" + userEntity.getRole().name())
         );
     }
-
     @Override
     public String getPassword() {
         return userEntity.getPassword();

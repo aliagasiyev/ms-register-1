@@ -12,20 +12,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        logging:
-          level:
-            org.hibernate.SQL:
-              DEBUG org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+jwt:
+  secret: 0gVYlqR1M+XtvLdD7GyN0+9K3/EqCwFf7+NSLmpsvSJ8++262HSQTjIkyWbDTWMg5Fr4CojYzrCyV7t8fp5GVg==
+  access-token-expiration: 3600000
+  refresh-token-expiration: 604800000
 
 
-
-
-
-
-
-
-
-
-
-
-
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

@@ -1,4 +1,4 @@
-package az.edu.msregister.config;
+package az.edu.msregister.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

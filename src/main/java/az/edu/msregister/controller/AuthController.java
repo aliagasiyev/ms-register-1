@@ -1,6 +1,6 @@
 package az.edu.msregister.controller;
 
-import az.edu.msregister.config.JwtTokenProvider;
+import az.edu.msregister.security.JwtTokenProvider;
 import az.edu.msregister.dto.request.LoginRequest;
 import az.edu.msregister.dto.request.RefreshRequest;
 import az.edu.msregister.dto.response.LoginResponse;
@@ -28,7 +28,6 @@ public class AuthController {
                 )
         );
 
-
         String accessToken = jwtTokenProvider.generateAccessToken(authentication);
         String refreshToken = jwtTokenProvider.generateRefreshToken(authentication);
 
@@ -48,7 +47,6 @@ public class AuthController {
         if (!jwtTokenProvider.validateToken(refreshToken)) {
             return ResponseEntity.badRequest().build();
         }
-
 
         String username = jwtTokenProvider.getUsernameFromToken(refreshToken);
 

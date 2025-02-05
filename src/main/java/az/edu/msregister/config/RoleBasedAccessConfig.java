@@ -29,28 +29,9 @@ public class RoleBasedAccessConfig {
                 Collections.emptySet(),
                 Collections.emptySet()
         ));
-
     }
 
     public static RolePermissions getPermissions(UserRole role) {
-        return rolePermissions.get(role);
-    }
-
-    public static class RolePermissions {
-        private final Set<UserRole> canCreate;
-        private final Set<UserRole> canDelete;
-
-        public RolePermissions(Set<UserRole> canCreate, Set<UserRole> canDelete) {
-            this.canCreate = canCreate;
-            this.canDelete = canDelete;
-        }
-
-        public Set<UserRole> getCanCreate() {
-            return canCreate;
-        }
-
-        public Set<UserRole> getCanDelete() {
-            return canDelete;
-        }
+        return rolePermissions.getOrDefault(role, new RolePermissions(Collections.emptySet(), Collections.emptySet()));
     }
 }

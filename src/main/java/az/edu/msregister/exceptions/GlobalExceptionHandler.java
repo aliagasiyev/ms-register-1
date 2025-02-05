@@ -17,7 +17,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, status);
     }
 
-    // Role-Based Exceptions
     @ExceptionHandler(RoleNotFoundException.class)
     public ResponseEntity<Object> handleRoleNotFoundException(RoleNotFoundException ex) {
         return buildResponse("Role Not Found", ex.getMessage(), HttpStatus.NOT_FOUND);
@@ -33,7 +32,6 @@ public class GlobalExceptionHandler {
         return buildResponse("Invalid Role Assignment", ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    // User Exceptions
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex) {
         return buildResponse("User Not Found", ex.getMessage(), HttpStatus.NOT_FOUND);
@@ -44,7 +42,6 @@ public class GlobalExceptionHandler {
         return buildResponse("User Already Exists", ex.getMessage(), HttpStatus.CONFLICT);
     }
 
-    // Generic Exceptions
     @ExceptionHandler(InvalidRequestException.class)
     public ResponseEntity<Object> handleInvalidRequestException(InvalidRequestException ex) {
         return buildResponse("Invalid Request", ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -55,7 +52,6 @@ public class GlobalExceptionHandler {
         return buildResponse("Database Error", ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // Default Exception Handler
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGenericException(Exception ex) {
         return buildResponse("Internal Server Error", ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -1,4 +1,4 @@
-package az.edu.msregister.service;
+package az.edu.msregister.config;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

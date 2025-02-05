@@ -1,5 +1,6 @@
 package az.edu.msregister.entity;
 
+import az.edu.msregister.enums.SpecializationType;
 import az.edu.msregister.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,8 +22,10 @@ public class UserEntity {
     private String surname;
     private String fin;
     private String email;
-    private String specialization;
-    private String personalEmail;
+
+    @Enumerated(EnumType.STRING)
+    private SpecializationType specialization;
+
     private String courseEmail;
     private String phoneNumber;
     private String password;
