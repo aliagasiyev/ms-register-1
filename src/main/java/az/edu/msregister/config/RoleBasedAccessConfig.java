@@ -29,6 +29,7 @@ public class RoleBasedAccessConfig {
                 Collections.emptySet(),
                 Collections.emptySet()
         ));
+
     }
 
     public static RolePermissions getPermissions(UserRole role) {
