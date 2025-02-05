@@ -5,6 +5,7 @@ import az.edu.msregister.dto.request.UserRegistrationRequest;
 import az.edu.msregister.dto.response.UserResponse;
 import az.edu.msregister.entity.UserEntity;
 import az.edu.msregister.enums.UserRole;
+import az.edu.msregister.exceptions.*;
 import az.edu.msregister.mapper.UserMapper;
 import az.edu.msregister.repository.UserRepository;
 import az.edu.msregister.service.UserService;
@@ -24,21 +25,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse registerUser(UserRegistrationRequest request, String creatorEmail) {
         UserEntity creator = userRepository.findByEmail(creatorEmail)
-                .orElseThrow(() -> new RuntimeException("Creator not found"));
+                .orElseThrow(() -> new UserNotFoundException("Creator not found"));
 
         UserRole creatorRole = creator.getRole();
         UserRole newUserRole = request.getRole();
 
-        // Check role-based access
-        if (!RoleBasedAccessConfig.getPermissions(creatorRole).getCanCreate().contains(newUserRole)) {
-            throw new RuntimeException(creatorRole + " is not allowed to create " + newUserRole);
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new UserAlreadyExistsException("User with email " + request.getEmail() + " already exists");
         }
 
-        // Create and save the new user
+        if (!RoleBasedAccessConfig.getPermissions(creatorRole).getCanCreate().contains(newUserRole)) {
+            throw new RolePermissionException(creatorRole + " is not allowed to create " + newUserRole);
+        }
+
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         UserEntity user = UserEntity.builder()
                 .name(request.getName())
                 .surname(request.getSurname())
+                .fin(request.getFin())
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
                 .specialization(request.getSpecialization())
@@ -48,37 +52,42 @@ public class UserServiceImpl implements UserService {
                 .role(newUserRole)
                 .build();
 
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new DatabaseException("Error saving user to database: " + e.getMessage());
+        }
+
         return UserMapper.INSTANCE.toResponse(user);
     }
 
     @Override
     public void deleteUser(Long userId, String requestorEmail) {
-        // Check if the requestor exists
         UserEntity requestor = userRepository.findByEmail(requestorEmail)
-                .orElseThrow(() -> new RuntimeException("Requestor not found"));
+                .orElseThrow(() -> new UserNotFoundException("Requestor not found"));
 
-        // Retrieve the user to delete
         UserEntity userToDelete = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         UserRole requestorRole = requestor.getRole();
         UserRole userRole = userToDelete.getRole();
 
-        // Check if the requestor has permission to delete the user
         if (!RoleBasedAccessConfig.getPermissions(requestorRole).getCanDelete().contains(userRole)) {
-            throw new RuntimeException(requestorRole + " is not allowed to delete " + userRole);
+            throw new RolePermissionException(requestorRole + " is not allowed to delete " + userRole);
         }
 
-        // Perform the deletion
-        userRepository.delete(userToDelete);
+        try {
+            userRepository.delete(userToDelete);
+        } catch (Exception e) {
+            throw new DatabaseException("Error deleting user from database: " + e.getMessage());
+        }
     }
 
     @Override
     public List<UserResponse> getUsersByRole(UserRole role) {
-        return userRepository.findByRole(role).stream()
-                .map(UserMapper.INSTANCE::toResponse)
-                .collect(Collectors.toList());
+        return userRepository.findByRole(role)
+                .map(user -> List.of(UserMapper.INSTANCE.toResponse(user)))
+                .orElseThrow(() -> new RoleNotFoundException("No users found with role " + role));
     }
 
     @Override
