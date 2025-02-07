@@ -1,5 +1,7 @@
-package az.edu.msregister.entity;
+package az.edu.msregister.config;
 
+import az.edu.msregister.entity.UserEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -24,5 +26,6 @@ public class PasswordResetToken {
     private UserEntity user;
 
     @Column(nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime expiryDate;
 }

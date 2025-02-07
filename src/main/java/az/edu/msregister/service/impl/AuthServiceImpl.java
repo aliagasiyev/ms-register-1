@@ -1,9 +1,6 @@
 package az.edu.msregister.service.impl;
-
-import az.edu.msregister.dto.request.ForgotPasswordRequest;
 import az.edu.msregister.dto.request.LoginRequest;
 import az.edu.msregister.dto.request.RefreshRequest;
-import az.edu.msregister.dto.request.ResetPasswordRequest;
 import az.edu.msregister.dto.response.LoginResponse;
 import az.edu.msregister.security.JwtTokenProvider;
 import az.edu.msregister.service.AuthService;
@@ -19,7 +16,6 @@ public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
-    private final PasswordResetTokenService passwordResetTokenService;
 
     @Override
     public LoginResponse login(LoginRequest request) {
@@ -57,15 +53,5 @@ public class AuthServiceImpl implements AuthService {
                 .accessToken(newAccessToken)
                 .refreshToken(refreshToken)
                 .build();
-    }
-
-    @Override
-    public void forgotPassword(ForgotPasswordRequest request) {
-        passwordResetTokenService.createPasswordResetToken(request.getEmail());
-    }
-
-    @Override
-    public void resetPassword(ResetPasswordRequest request) {
-        passwordResetTokenService.resetPassword(request.getToken(), request.getNewPassword());
     }
 }

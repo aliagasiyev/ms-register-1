@@ -1,14 +1,16 @@
 package az.edu.msregister.service.impl;
 
-import az.edu.msregister.entity.PasswordResetToken;
+import az.edu.msregister.config.PasswordResetToken;
 import az.edu.msregister.entity.UserEntity;
+import az.edu.msregister.exceptions.TokenExpiredException;
+import az.edu.msregister.exceptions.SamePasswordException;
 import az.edu.msregister.repository.PasswordResetTokenRepository;
 import az.edu.msregister.repository.UserRepository;
-
 import az.edu.msregister.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -48,7 +50,7 @@ public class PasswordResetTokenService {
             PasswordResetToken resetToken = resetTokenOpt.get();
             if (resetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
                 tokenRepository.delete(resetToken);
-                return Optional.empty();
+                throw new TokenExpiredException("The password reset token has expired.");
             }
             return Optional.of(resetToken);
         }
@@ -62,6 +64,9 @@ public class PasswordResetTokenService {
         }
         PasswordResetToken resetToken = resetTokenOpt.get();
         UserEntity user = resetToken.getUser();
+        if (passwordEncoder.matches(newPassword, user.getPassword())) {
+            throw new SamePasswordException("The new password cannot be the same as the old password.");
+        }
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         tokenRepository.delete(resetToken);

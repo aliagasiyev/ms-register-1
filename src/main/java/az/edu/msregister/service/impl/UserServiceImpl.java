@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
                 .fin(request.getFin())
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
-                .specialization(request.getSpecialization()) // Now using Enum
+                .specialization(request.getSpecialization())
                 .courseEmail(request.getCourseEmail())
                 .password(encodedPassword)
                 .role(newUserRole)
