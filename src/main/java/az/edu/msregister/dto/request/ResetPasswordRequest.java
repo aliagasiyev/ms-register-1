@@ -9,9 +9,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResetPasswordRequest {
-    @NotBlank(message = "Token boş ola bilməz")
+    @NotBlank(message = "Token cannot be blank")
     private String token;
 
-    @NotBlank(message = "Yeni şifrə boş ola bilməz")
+    @NotBlank(message = "New password cannot be blank")
     private String newPassword;
 }

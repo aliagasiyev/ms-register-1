@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ForgotPasswordRequest {
-    @NotBlank(message = "Email boş ola bilməz")
-    @Email(message = "Düzgün email ünvanı daxil edin")
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Please enter a valid email address")
     private String email;
 }
