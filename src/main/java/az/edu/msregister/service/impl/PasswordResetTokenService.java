@@ -22,13 +22,10 @@ public class PasswordResetTokenService {
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
 
-    /**
-     * Token yaradır, DB-yə yazır və email vasitəsilə reset linki göndərir.
-     */
     public void createPasswordResetToken(String email) {
         Optional<UserEntity> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
-            throw new RuntimeException("Email ünvanı ilə istifadəçi tapılmadı: " + email);
+            throw new RuntimeException("No user found with the provided email: " + email);
         }
         UserEntity user = userOpt.get();
         String token = UUID.randomUUID().toString();
@@ -39,16 +36,12 @@ public class PasswordResetTokenService {
                 .build();
         tokenRepository.save(resetToken);
 
-        // Reset link: domain və port real mühitə uyğun tənzimlənməlidir.
         String resetLink = "http://localhost:8080/api/auth/reset-password?token=" + token;
-        String subject = "Şifrə sıfırlama sorğusu";
-        String body = "Şifrənizi sıfırlamaq üçün aşağıdakı linkə daxil olun:\n" + resetLink;
+        String subject = "Password Reset Request";
+        String body = "To reset your password, click the link below:\n" + resetLink;
         emailService.sendEmail(user.getEmail(), subject, body);
     }
 
-    /**
-     * Tokenin etibarlılığını yoxlayır: mövcudluğu və müddətinin keçməməsi.
-     */
     public Optional<PasswordResetToken> validatePasswordResetToken(String token) {
         Optional<PasswordResetToken> resetTokenOpt = tokenRepository.findByToken(token);
         if (resetTokenOpt.isPresent()) {
@@ -62,13 +55,10 @@ public class PasswordResetTokenService {
         return Optional.empty();
     }
 
-    /**
-     * Token və yeni şifrə vasitəsilə istifadəçinin şifrəsini yeniləyir.
-     */
     public void resetPassword(String token, String newPassword) {
         Optional<PasswordResetToken> resetTokenOpt = validatePasswordResetToken(token);
         if (resetTokenOpt.isEmpty()) {
-            throw new RuntimeException("Token etibarsız və ya müddəti keçib");
+            throw new RuntimeException("Token is invalid or has expired");
         }
         PasswordResetToken resetToken = resetTokenOpt.get();
         UserEntity user = resetToken.getUser();
