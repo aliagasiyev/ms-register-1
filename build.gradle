@@ -41,7 +41,11 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
     //  Swagger UI (API Documentation)
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
+
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     //  Spring Boot DevTools (For Development Hot-Reload)
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

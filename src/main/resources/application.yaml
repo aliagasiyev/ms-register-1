@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: Ali200aa
+    password: postgres
   jpa:
     show-sql: false
     hibernate:
@@ -12,14 +12,27 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ilkinrzayev07700@gmail.com
+    password: "yisl dsgz exqe gawe"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 jwt:
   secret: 0gVYlqR1M+XtvLdD7GyN0+9K3/EqCwFf7+NSLmpsvSJ8++262HSQTjIkyWbDTWMg5Fr4CojYzrCyV7t8fp5GVg==
   access-token-expiration: 3600000
   refresh-token-expiration: 604800000
 
-
 logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+springdoc:
+  packages-to-scan: az.edu.msregister.controller
