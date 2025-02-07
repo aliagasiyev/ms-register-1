@@ -1,17 +1,14 @@
 package az.edu.msregister.service;
 
+import az.edu.msregister.dto.request.StudentRequest;
+import az.edu.msregister.dto.response.StudentResponse;
 import az.edu.msregister.entity.StudentEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentService {
-    StudentEntity createStudent(StudentEntity student);
+    StudentResponse createStudent(StudentRequest requestDto);
 
-    StudentEntity updateStudent(StudentEntity student);
-
-    StudentEntity getStudentById(Long id);
-
-    void deleteStudent(Long id);
-
-    List<StudentEntity> getAllStudents();
+    Optional findByEmail(String email);
 }

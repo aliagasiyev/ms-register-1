@@ -1,17 +1,13 @@
 package az.edu.msregister.service;
 
-import az.edu.msregister.entity.EducationEntity;
 
-import java.util.List;
+import az.edu.msregister.dto.request.EducationRequest;
+import az.edu.msregister.dto.response.EducationResponse;
+
+import java.util.Optional;
 
 public interface EducationService {
-    EducationEntity createEducation(EducationEntity education);
+    EducationResponse createEducation(EducationRequest requestDto);
 
-    EducationEntity updateEducation(EducationEntity education);
-
-    EducationEntity getEducationById(Long id);
-
-    void deleteEducation(Long id);
-
-    List<EducationEntity> getAllEducation();
+    Optional findById(Long id);
 }

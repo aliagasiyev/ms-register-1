@@ -1,17 +1,14 @@
 package az.edu.msregister.service;
 
+import az.edu.msregister.dto.request.TeacherRequest;
+import az.edu.msregister.dto.response.TeacherResponse;
 import az.edu.msregister.entity.TeacherEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TeacherService {
-    TeacherEntity createTeacher(TeacherEntity teacher);
+    TeacherResponse createTeacher(TeacherRequest requestDto);
 
-    TeacherEntity updateTeacher(TeacherEntity teacher);
-
-    TeacherEntity getTeacherById(Long id);
-
-    void deleteTeacher(Long id);
-
-    List<TeacherEntity> getAllTeachers();
+    Optional findByEmail(String email);
 }

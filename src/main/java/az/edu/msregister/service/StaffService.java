@@ -1,17 +1,14 @@
 package az.edu.msregister.service;
 
+import az.edu.msregister.dto.request.StaffRequest;
+import az.edu.msregister.dto.response.StaffResponse;
 import az.edu.msregister.entity.StaffEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StaffService {
-    StaffEntity createStaff(StaffEntity staff);
+    StaffResponse createStaff(StaffRequest requestDto);
 
-    StaffEntity updateStaff(StaffEntity staff);
-
-    StaffEntity getStaffById(Long id);
-
-    void deleteStaff(Long id);
-
-    List<StaffEntity> getAllStaff();
+    Optional findByEmail(String email);
 }
