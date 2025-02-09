@@ -4,14 +4,16 @@ import az.edu.msregister.enums.SpecializationType;
 import az.edu.msregister.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED) // Hər subclass ayrıca cədvəldə olacaq
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class UserEntity {
 
     @Id

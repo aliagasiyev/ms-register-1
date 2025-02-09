@@ -2,15 +2,18 @@ package az.edu.msregister.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Entity
 @Table(name = "teachers")
+@PrimaryKeyJoinColumn(name = "user_id") // UserEntity ilə əlaqəni göstərir
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 public class TeacherEntity extends UserEntity {
 
     @ElementCollection

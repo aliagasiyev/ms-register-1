@@ -20,7 +20,7 @@ public class TeacherResponse extends UserResponse {
     private List<String> socialMediaLinks;
     private String activityPosts;
     private List<String> attendanceStatuses;
-    private List<String> attendanceGrades;
+    private List<Integer> attendanceGrades;
 }
 
 

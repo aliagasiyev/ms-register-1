@@ -18,5 +18,5 @@ public class StaffResponse extends UserResponse {
     private List<String> socialMediaLinks;
     private String activityPosts;
     private List<String> attendanceStatus; // Must match entity field names
-    private List<String> attendanceGrade;
+    private List<Integer> attendanceGrade;
 }
