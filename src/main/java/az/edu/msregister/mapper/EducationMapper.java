@@ -1,4 +1,4 @@
-package az.edu.msregister.mapper;
-
-public interface EducationMapper {
-}
+//package az.edu.msregister.mapper;
+//
+//public interface EducationMapper {
+//}

@@ -20,6 +20,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, status);
     }
 
+    @ExceptionHandler(StaffNotFoundException.class)
+    public ResponseEntity<Object> handleStaffNotFoundException(StaffNotFoundException ex) {
+        return buildResponse("Role Not Found", ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(RoleNotFoundException.class)
     public ResponseEntity<Object> handleRoleNotFoundException(RoleNotFoundException ex) {
         return buildResponse("Role Not Found", ex.getMessage(), HttpStatus.NOT_FOUND);

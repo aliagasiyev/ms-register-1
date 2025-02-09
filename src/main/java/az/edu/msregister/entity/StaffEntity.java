@@ -1,9 +1,5 @@
 package az.edu.msregister.entity;
 
-import az.edu.msregister.enums.Job;
-import az.edu.msregister.enums.SocialMedia;
-import az.edu.msregister.enums.AttendanceStatus;
-import az.edu.msregister.enums.AttendanceGrade;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,11 +11,19 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StaffEntity extends UserEntity {
+@Builder(builderMethodName = "staffBuilder")
+public class StaffEntity {
 
-    @Enumerated(EnumType.STRING)
+    @Id
+    private Long id;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @MapsId
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
+
     @Column(nullable = false)
-    private Job job;
+    private String job;
 
     @Column
     private String bio;
@@ -30,8 +34,7 @@ public class StaffEntity extends UserEntity {
     @ElementCollection
     @CollectionTable(name = "staff_social_media", joinColumns = @JoinColumn(name = "staff_id"))
     @Column(name = "social_media")
-    @Enumerated(EnumType.STRING)
-    private List<SocialMedia> socialMediaLinks;
+    private List<String> socialMediaLinks;
 
     @Column
     private String activityPosts;
@@ -39,12 +42,14 @@ public class StaffEntity extends UserEntity {
     @ElementCollection
     @CollectionTable(name = "staff_attendance", joinColumns = @JoinColumn(name = "staff_id"))
     @Column(name = "attendance_status")
-    @Enumerated(EnumType.STRING)
-    private List<AttendanceStatus> attendanceStatuses;
+    private List<String> attendanceStatus;
 
     @ElementCollection
     @CollectionTable(name = "staff_grades", joinColumns = @JoinColumn(name = "staff_id"))
     @Column(name = "attendance_grade")
-    @Enumerated(EnumType.STRING)
-    private List<AttendanceGrade> attendanceGrades;
+    private List<String> attendanceGrade;
+
+    public void setUser(UserEntity user) {
+        this.userEntity = user;
+    }
 }

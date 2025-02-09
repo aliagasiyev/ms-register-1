@@ -10,13 +10,12 @@ public class RoleBasedAccessConfig {
     private static final Map<UserRole, RolePermissions> rolePermissions = new HashMap<>();
 
     static {
-
         Set<UserRole> allRoles = new HashSet<>(Arrays.asList(UserRole.values()));
         rolePermissions.put(UserRole.SUPER_ADMIN, new RolePermissions(allRoles, allRoles));
 
         rolePermissions.put(UserRole.STAFF, new RolePermissions(
-                Set.of(UserRole.STUDENT, UserRole.TEACHER),
-                Set.of(UserRole.STUDENT, UserRole.TEACHER)
+                Set.of(UserRole.STAFF, UserRole.STUDENT, UserRole.TEACHER),
+                Set.of(UserRole.STAFF, UserRole.STUDENT, UserRole.TEACHER)
         ));
 
         rolePermissions.put(UserRole.TEACHER, new RolePermissions(
@@ -29,6 +28,7 @@ public class RoleBasedAccessConfig {
                 Collections.emptySet()
         ));
     }
+
     public static RolePermissions getPermissions(UserRole role) {
         return rolePermissions.getOrDefault(role, new RolePermissions(Collections.emptySet(), Collections.emptySet()));
     }

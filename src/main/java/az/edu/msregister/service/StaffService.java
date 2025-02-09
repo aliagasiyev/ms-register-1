@@ -2,13 +2,11 @@ package az.edu.msregister.service;
 
 import az.edu.msregister.dto.request.StaffRequest;
 import az.edu.msregister.dto.response.StaffResponse;
-import az.edu.msregister.entity.StaffEntity;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.security.core.Authentication;
 
 public interface StaffService {
-    StaffResponse createStaff(StaffRequest requestDto);
 
-    Optional findByEmail(String email);
+    StaffResponse createStaff(StaffRequest request, Authentication authentication);
+
+    StaffResponse updateStaff(StaffRequest request, Authentication authentication);
 }

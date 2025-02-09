@@ -1,7 +1,7 @@
 package az.edu.msregister.dto.request;
 
-import az.edu.msregister.enums.Job;
 import lombok.*;
+
 import java.util.List;
 
 
@@ -9,13 +9,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class StaffRequest extends UserRegistrationRequest {
-    private Job job;
+    private String job;
     private String bio;
     private String picture;
-    private List socialMediaLinks;
+    private List<String> socialMediaLinks;
     private String activityPosts;
-    private List attendanceStatuses;
-    private List attendanceGrades;
+    private String attendanceStatus;
+    private String attendanceGrade;
 }
+

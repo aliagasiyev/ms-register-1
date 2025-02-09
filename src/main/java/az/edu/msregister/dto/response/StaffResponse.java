@@ -1,7 +1,9 @@
 package az.edu.msregister.dto.response;
 
-import az.edu.msregister.enums.Job;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -9,13 +11,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class StaffResponse extends UserResponse {
-    private Job job;
+    private String job;
     private String bio;
     private String picture;
-    private List socialMediaLinks;
+    private List<String> socialMediaLinks;
     private String activityPosts;
-    private List attendanceStatuses;
-    private List attendanceGrades;
+    private List<String> attendanceStatus; // Must match entity field names
+    private List<String> attendanceGrade;
 }
