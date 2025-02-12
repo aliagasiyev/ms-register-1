@@ -3,8 +3,6 @@ package az.edu.msregister.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "staff")
 @Getter
@@ -17,7 +15,7 @@ public class StaffEntity {
     @Id
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
@@ -31,23 +29,17 @@ public class StaffEntity {
     @Column
     private String picture;
 
-    @ElementCollection
-    @CollectionTable(name = "staff_social_media", joinColumns = @JoinColumn(name = "staff_id"))
     @Column(name = "social_media")
-    private List<String> socialMediaLinks;
+    private String socialMediaLinks;
 
     @Column
     private String activityPosts;
 
-    @ElementCollection
-    @CollectionTable(name = "staff_attendance", joinColumns = @JoinColumn(name = "staff_id"))
-    @Column(name = "attendance_status")
-    private List<String> attendanceStatus;
+    @Column(name = "attendance_status", columnDefinition = "TEXT")
+    private String attendanceStatus;
 
-    @ElementCollection
-    @CollectionTable(name = "staff_grades", joinColumns = @JoinColumn(name = "staff_id"))
-    @Column(name = "attendance_grade")
-    private List<String> attendanceGrade;
+    @Column(name = "attendance_grade", columnDefinition = "TEXT")
+    private Integer attendanceGrade;
 
     public void setUser(UserEntity user) {
         this.userEntity = user;

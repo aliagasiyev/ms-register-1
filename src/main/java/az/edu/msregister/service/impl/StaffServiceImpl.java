@@ -17,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -42,9 +41,7 @@ public class StaffServiceImpl implements StaffService {
             throw new RuntimeException("StaffEntity already exists for this user");
         }
 
-        StaffEntity staffEntity = staffMapper.toEntity(request);
-        staffEntity.setUser(user);
-
+        StaffEntity staffEntity = staffMapper.toEntity(request, user);
         staffRepository.save(staffEntity);
         return staffMapper.toDto(staffEntity);
     }
@@ -53,43 +50,19 @@ public class StaffServiceImpl implements StaffService {
     @Transactional
     public StaffResponse updateStaff(StaffRequest request, Authentication authentication) {
         String userEmail = authentication.getName();
-
-        // Fetch the UserEntity based on email
         UserEntity user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: " + userEmail));
 
-        // Check if the user is STAFF
         if (user.getRole() != UserRole.STAFF) {
             throw new UnauthorizedAccessException("Only users with the STAFF role can update their StaffEntity");
         }
 
-        // Fetch the StaffEntity associated with the user
         StaffEntity existingStaff = staffRepository.findByUserEntity(user)
                 .orElseThrow(() -> new StaffNotFoundException("StaffEntity not found for user: " + userEmail));
-        System.out.println(existingStaff);  // Check the value of existingStaff here
 
-
-        // Update the fields from the request
-        existingStaff.setJob(request.getJob());
-        existingStaff.setBio(request.getBio());
-        existingStaff.setPicture(request.getPicture());
-        existingStaff.setSocialMediaLinks(request.getSocialMediaLinks());
-        existingStaff.setActivityPosts(request.getActivityPosts());
-
-        // Handle attendance status and grade
-        if (request.getAttendanceStatus() != null) {
-            existingStaff.setAttendanceStatus(List.of(request.getAttendanceStatus()));
-        }
-        if (request.getAttendanceGrade() != null) {
-            existingStaff.setAttendanceGrade(List.of(request.getAttendanceGrade()));
-        }
-
-        // Save the updated StaffEntity
+        staffMapper.updateStaffEntity(existingStaff, request);
         staffRepository.save(existingStaff);
 
-        // Return the response DTO
         return staffMapper.toDto(existingStaff);
     }
-
-
 }

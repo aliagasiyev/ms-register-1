@@ -13,9 +13,9 @@ public class StaffRequest extends UserRegistrationRequest {
     private String job;
     private String bio;
     private String picture;
-    private List<String> socialMediaLinks;
+    private String socialMediaLinks;
     private String activityPosts;
     private String attendanceStatus;
-    private String attendanceGrade;
+    private Integer attendanceGrade;
 }
 
