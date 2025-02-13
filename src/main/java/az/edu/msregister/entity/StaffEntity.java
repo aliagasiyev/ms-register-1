@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(builderMethodName = "staffBuilder")
-public class StaffEntity {
+public class StaffEntity  {
 
     @Id
     private Long id;

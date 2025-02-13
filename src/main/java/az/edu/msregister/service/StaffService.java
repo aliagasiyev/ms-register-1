@@ -9,4 +9,7 @@ public interface StaffService {
     StaffResponse createStaff(StaffRequest request, Authentication authentication);
 
     StaffResponse updateStaff(StaffRequest request, Authentication authentication);
+
+    void deleteStaff(Long staffId, Authentication authentication);  // Add this method
+
 }

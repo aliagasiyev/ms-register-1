@@ -26,4 +26,10 @@ public class StaffController {
     public StaffResponse updateStaff(@RequestBody StaffRequest request, Authentication authentication) {
         return staffService.updateStaff(request, authentication);
     }
+
+    @DeleteMapping("/delete/{staffId}")
+    @PreAuthorize("hasRole('STAFF')")
+    public void deleteStaff(@PathVariable Long staffId, Authentication authentication) {
+        staffService.deleteStaff(staffId, authentication);
+    }
 }

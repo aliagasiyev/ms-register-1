@@ -1,19 +1,24 @@
-//package az.edu.msregister.dto.request;
-//import lombok.*;
-//
-//import java.util.List;
-//
-//@Getter
-//@Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
-//public class TeacherRequest extends UserRegistrationRequest {
-//    private List<String> universities;
-//    private String job;
-//    private String bio;
-//    private String picture;
-//    private List<String> socialMediaLinks;
-//    private String activityPosts;
-//    private List<String> attendanceStatuses;
-//    private List<Integer> attendanceGrades;
-//}
+package az.edu.msregister.dto.request;
+
+import az.edu.msregister.enums.PaymentType;
+import az.edu.msregister.enums.TeachingSubjectType;
+import az.edu.msregister.enums.SocialMediaPlatform;
+import lombok.*;
+
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class TeacherRequest extends UserRegistrationRequest {
+
+    private String universities;
+    private String workExperiences;
+    private TeachingSubjectType teachingSubjects;
+    private PaymentType paymentDetails;
+    private String bio;
+    private String profilePicture;
+    private SocialMediaPlatform socialMediaLinks;
+    private String activityPosts;
+}

@@ -65,4 +65,24 @@ public class StaffServiceImpl implements StaffService {
 
         return staffMapper.toDto(existingStaff);
     }
+
+    @Override
+    public void deleteStaff(Long staffId, Authentication authentication) {
+        String userEmail = authentication.getName();
+        UserEntity user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (user.getRole() != UserRole.STAFF) {
+            throw new UnauthorizedAccessException("Only STAFF can delete their own StaffEntity");
+        }
+
+        StaffEntity staffEntity = staffRepository.findById(staffId)
+                .orElseThrow(() -> new StaffNotFoundException("StaffEntity not found for id: " + staffId));
+
+        if (!staffEntity.getUserEntity().getEmail().equals(userEmail)) {
+            throw new UnauthorizedAccessException("You cannot delete another user's StaffEntity");
+        }
+
+        staffRepository.delete(staffEntity);
+    }
 }
