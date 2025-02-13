@@ -12,9 +12,10 @@ public interface TeacherMapper {
 
     TeacherMapper INSTANCE = Mappers.getMapper(TeacherMapper.class);
 
-    // Convert TeacherRequest to TeacherEntity
-    TeacherEntity toEntity(TeacherRequest teacherRequest);
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "id", ignore = true) // Hibernate id-ni özü yaratsın
+// Prevent MapStruct from overwriting user
+    TeacherEntity toEntity(TeacherRequest request);
 
-    // Convert TeacherEntity to TeacherResponse
-    TeacherResponse toDto(TeacherEntity teacherEntity);
+    TeacherResponse toDto(TeacherEntity entity);
 }

@@ -26,7 +26,6 @@ public class TeacherServiceImpl implements TeacherService {
     private final TeacherRepository teacherRepository;
     private final TeacherMapper teacherMapper;
 
-    @Override
     @Transactional
     public TeacherResponse createTeacher(TeacherRequest requestDto, Authentication authentication) {
         String userEmail = authentication.getName();
@@ -39,13 +38,9 @@ public class TeacherServiceImpl implements TeacherService {
         }
 
         TeacherEntity teacherEntity = teacherMapper.toEntity(requestDto);
+        teacherEntity.setUser(user);  // ✅ Set user explicitly
 
-        teacherEntity.setId(user.getId());
-        teacherEntity.setName(user.getName());
-        teacherEntity.setSurname(user.getSurname());
-        teacherEntity.setEmail(user.getEmail());
-
-        teacherEntity = teacherRepository.save(teacherEntity);
+        teacherEntity = teacherRepository.save(teacherEntity);  // ✅ Save to DB
 
         return teacherMapper.toDto(teacherEntity);
     }
