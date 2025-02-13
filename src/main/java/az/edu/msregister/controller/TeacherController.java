@@ -20,7 +20,7 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
     public ResponseEntity<TeacherResponse> createTeacher(@RequestBody TeacherRequest request, Authentication authentication) {
         TeacherResponse teacherResponse = teacherService.createTeacher(request, authentication);
         return ResponseEntity.status(HttpStatus.CREATED).body(teacherResponse);
