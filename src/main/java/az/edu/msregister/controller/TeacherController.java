@@ -4,7 +4,9 @@ import az.edu.msregister.dto.request.TeacherRequest;
 import az.edu.msregister.dto.response.TeacherResponse;
 import az.edu.msregister.service.TeacherService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +20,10 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TeacherResponse> createTeacher(@RequestBody TeacherRequest request, Authentication authentication) {
-        return ResponseEntity.ok(teacherService.createTeacher(request, authentication));
+        TeacherResponse teacherResponse = teacherService.createTeacher(request, authentication);
+        return ResponseEntity.status(HttpStatus.CREATED).body(teacherResponse);
     }
 
     @GetMapping("/email/{email}")
@@ -29,11 +33,14 @@ public class TeacherController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
     public ResponseEntity<TeacherResponse> updateTeacher(@PathVariable Long id, @RequestBody TeacherRequest request, Authentication authentication) {
-        return ResponseEntity.ok(teacherService.update(id, request, authentication));
+        TeacherResponse teacherResponse = teacherService.update(id, request, authentication);
+        return ResponseEntity.ok(teacherResponse);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteTeacher(@PathVariable Long id, Authentication authentication) {
         teacherService.deleteTeacher(id, authentication);
         return ResponseEntity.noContent().build();
