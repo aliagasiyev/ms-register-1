@@ -34,7 +34,7 @@ public class StaffServiceImpl implements StaffService {
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         if (user.getRole() != UserRole.STAFF) {
-            throw new UnauthorizedAccessException("Only STAFF can create their own StaffEntity");
+            throw new UnauthorizedAccessException("Only STAFF can create their own StaffEntityy");
         }
 
         if (staffRepository.existsByUserEntity(user)) {
