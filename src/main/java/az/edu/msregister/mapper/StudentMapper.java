@@ -3,8 +3,6 @@ package az.edu.msregister.mapper;
 import az.edu.msregister.dto.request.StudentRequest;
 import az.edu.msregister.dto.response.StudentResponse;
 import az.edu.msregister.entity.StudentEntity;
-import az.edu.msregister.entity.UserEntity;
-import az.edu.msregister.enums.PaymentType;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

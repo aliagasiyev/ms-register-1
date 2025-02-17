@@ -28,8 +28,8 @@ public class UserRegistrationController {
     @DeleteMapping("/{userId}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'STAFF')")
     public ResponseEntity<String> deleteUser(@PathVariable Long userId, Authentication authentication) {
-        String requestorEmail = authentication.getName();
-        userService.deleteUser(userId, requestorEmail);
+        String requestEmail = authentication.getName();
+        userService.deleteUser(userId, requestEmail);
         return ResponseEntity.ok("User deleted successfully.");
     }
 

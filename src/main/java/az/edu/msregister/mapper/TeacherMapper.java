@@ -13,8 +13,7 @@ public interface TeacherMapper {
     TeacherMapper INSTANCE = Mappers.getMapper(TeacherMapper.class);
 
     @Mapping(target = "user", ignore = true)
-    @Mapping(target = "id", ignore = true) // Hibernate id-ni özü yaratsın
-// Prevent MapStruct from overwriting user
+    @Mapping(target = "id", ignore = true)
     TeacherEntity toEntity(TeacherRequest request);
 
     TeacherResponse toDto(TeacherEntity entity);

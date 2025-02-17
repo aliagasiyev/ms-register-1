@@ -10,6 +10,6 @@ public interface StaffService {
 
     StaffResponse updateStaff(StaffRequest request, Authentication authentication);
 
-    void deleteStaff(Long staffId, Authentication authentication);  // Add this method
+    void deleteStaff(Long staffId, Authentication authentication);
 
 }

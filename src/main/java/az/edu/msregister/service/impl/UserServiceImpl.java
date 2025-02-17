@@ -61,8 +61,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long userId, String requestorEmail) {
-        UserEntity requestor = userRepository.findByEmail(requestorEmail)
+    public void deleteUser(Long userId, String requestEmail) {
+        UserEntity requestor = userRepository.findByEmail(requestEmail)
                 .orElseThrow(() -> new UserNotFoundException("Requestor not found"));
 
         UserEntity userToDelete = userRepository.findById(userId)

@@ -39,9 +39,8 @@ public class StudentServiceImpl implements StudentService {
         }
 
         StudentEntity studentEntity = studentMapper.toEntity(requestDto);
-        studentEntity.setUser(user);  // Set user explicitly
-
-        studentEntity = studentRepository.save(studentEntity);  // Save to DB
+        studentEntity.setUser(user);
+        studentEntity = studentRepository.save(studentEntity);
 
         return studentMapper.toDto(studentEntity);
     }

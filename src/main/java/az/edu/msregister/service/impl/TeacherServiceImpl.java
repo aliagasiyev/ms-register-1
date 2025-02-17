@@ -38,9 +38,9 @@ public class TeacherServiceImpl implements TeacherService {
         }
 
         TeacherEntity teacherEntity = teacherMapper.toEntity(requestDto);
-        teacherEntity.setUser(user);  // ✅ Set user explicitly
+        teacherEntity.setUser(user);
 
-        teacherEntity = teacherRepository.save(teacherEntity);  // ✅ Save to DB
+        teacherEntity = teacherRepository.save(teacherEntity);
 
         return teacherMapper.toDto(teacherEntity);
     }
