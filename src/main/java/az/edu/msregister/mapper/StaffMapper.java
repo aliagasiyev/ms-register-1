@@ -14,10 +14,10 @@ public interface StaffMapper {
     StaffMapper INSTANCE = Mappers.getMapper(StaffMapper.class);
 
     @Mapping(source = "user", target = "userEntity")
-    @Mapping(target = "id", ignore = true) // Ensure ID is generated correctly
+    @Mapping(target = "id", ignore = true)
     StaffEntity toEntity(StaffRequest request, UserEntity user);
 
-    @Mapping(source = "userEntity", target = ".") // This will map userEntity fields into StaffResponse
+    @Mapping(source = "userEntity", target = ".")
     StaffResponse toDto(StaffEntity entity);
 
     default void updateStaffEntity(StaffEntity existingEntity, StaffRequest request) {

@@ -5,7 +5,6 @@ import az.edu.msregister.enums.TeachingSubjectType;
 import az.edu.msregister.enums.SocialMediaPlatform;
 import lombok.*;
 
-import java.util.List;
 
 @Getter
 @Setter
