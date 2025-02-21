@@ -38,12 +38,18 @@ public class StudentServiceImpl implements StudentService {
             throw new UnauthorizedAccessException("Only STAFF can create a Student");
         }
 
+        // Check if the user already has a student entity
+        if (user.getStudentEntity() != null) {
+            throw new UnauthorizedAccessException("User already has an associated student profile");
+        }
+
         StudentEntity studentEntity = studentMapper.toEntity(requestDto);
         studentEntity.setUser(user);
         studentEntity = studentRepository.save(studentEntity);
 
         return studentMapper.toDto(studentEntity);
     }
+
 
     @Override
     public Optional<StudentResponse> findByEmail(String email) {

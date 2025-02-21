@@ -16,5 +16,13 @@ public interface TeacherMapper {
     @Mapping(target = "id", ignore = true)
     TeacherEntity toEntity(TeacherRequest request);
 
+    @Mapping(target = "name", source = "user.name")
+    @Mapping(target = "surname", source = "user.surname")
+    @Mapping(target = "fin", source = "user.fin")
+    @Mapping(target = "email", source = "user.email")
+    @Mapping(target = "specialization", source = "user.specialization")
+    @Mapping(target = "courseEmail", source = "user.courseEmail")
+    @Mapping(target = "phoneNumber", source = "user.phoneNumber")
+    @Mapping(target = "role", source = "user.role")
     TeacherResponse toDto(TeacherEntity entity);
 }

@@ -17,12 +17,14 @@ import java.time.LocalDate;
 public class StudentEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
 
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
